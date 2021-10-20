@@ -5,35 +5,80 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: rgb(131,58,180);
-background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%);
-  
+  background: rgb(131, 58, 180);
+  background: linear-gradient(90deg, rgba(131, 58, 180, 1) 0%, rgba(253, 29, 29, 1) 50%, rgba(252, 176, 69, 1) 100%);
 }
-.top{
+
+.top {
   margin-top: 30px;
-  display:inline-flex;
+  display: inline-flex;
   width: 100%;
   position: relative;
 }
-#addUser{
+
+#addUser {
   position: absolute;
   right: 0;
 }
-.detail{
+
+.detail {
   display: block;
   margin: 0px auto;
- 
 }
-.updateUser{
+
+.updateUser {
   top: 0;
   display: block;
   margin: 20px auto;
   position: relative;
   padding-bottom: 70px;
 }
-.updatebtn{
+
+.updatebtn {
   position: absolute;
   right: 0;
   margin-top: 10px;
-  
+}
+
+.AddUserLayout {
+  border-radius: 10px;
+  position: absolute;
+  width: 96%;
+  background-color: #b1b1b1;
+  top: 110px;
+  box-shadow: 10px 10px 8px 10px #888888;
+}
+
+.container {
+  position: relative;
+}
+
+.mytabs {
+  display: flex;
+  flex-wrap: wrap;
+}
+.mytabs input[type="radio"] {
+  display: none;
+}
+.mytabs label {
+  padding: 15px;
+  background: #e2e2e2;
+  font-weight: bold;
+}
+
+.mytabs .tab {
+  width: 100%;
+  padding: 0px 10px;
+  background: #E2E2E2;
+  order: 1;
+  display: none;
+}
+
+
+.mytabs input[type='radio']:checked + label + .tab {
+  display: block;
+}
+
+.mytabs input[type="radio"]:checked + label {
+  background: #fff;
 }
