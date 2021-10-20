@@ -30,7 +30,6 @@ const Home = () => {
                 
 
 
-     
             <hr />
 
             <table class="table table-striped text-center shadow">

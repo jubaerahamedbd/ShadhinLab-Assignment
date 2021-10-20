@@ -1,8 +1,9 @@
 import axios from "axios";
 import React from "react";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { Country, State, City } from "country-state-city";
 const AddUser = () => {
     let history = useHistory()
     const [user, setUser] = useState({
@@ -13,17 +14,30 @@ const AddUser = () => {
         district: ""
     })
     const { first_name, last_name, user_type, division, district } = user
-    const OnInputChange = e => {
-        setUser({
-            ...user, [e.target.name]: e.target.value
+    const [divisions, setDivisions] = useState(
+        State.getStatesOfCountry("BD").filter((dataItem) => {
+          if (dataItem.name.includes("Division")) return true;
         })
-    }
+      );
+      const [districts, setDistricts] = useState([]);
+    
+      const OnInputChange = (e) => {
+        setUser({
+          ...user,
+          [e.target.name]:
+            e.target.name === "Division"
+              ? e.target.value.split("-")[0]
+              : e.target.value,
+        });
+      };
     const onSubmit = async e => {
         e.preventDefault()
         await axios.post("https://60f2479f6d44f300177885e6.mockapi.io/users", user)
         history.push("/")
     }
-
+    useEffect(() => {
+        console.log(State.getStatesOfCountry("BD"));
+      }, []);
     return (
         <div className="container">
             <div className="col-md-8 updateUser">
@@ -65,53 +79,66 @@ const AddUser = () => {
 
                     </div>
                     <div class="form-group row my-2">
-                        <label class="col-sm-3 col-form-label col-form-label-sm">Division</label>
-                        <div class="col-sm-9">
-                            <input
-                                type="text"
-                                class="form-control"
-                                name="division"
-                                value={division}
-                                placeholder="Enter Division"
-                                onChange={e => OnInputChange(e)}
-                            />
-                        </div>
+            <label class="col-sm-3 col-form-label col-form-label-sm">
+              Division
+            </label>
+            <div class="col-sm-9">
+              <select
+                onChange={(e) => {
+                  OnInputChange(e);
+                  setDistricts(
+                    City.getCitiesOfState("BD", e.target.value.split("-")[1])
+                  );
+                }}
+                class="form-control form-control-sm"
+                name="division"
+              >
+                {divisions.map((dataItem) => {
+                  return (
+                    <option value={dataItem.name + "-" + dataItem.isoCode}>
+                      {dataItem.name}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
+          </div>
 
-                    </div>
-                    <div class="form-group row my-2">
-                        <label class="col-sm-3 col-form-label col-form-label-sm">District</label>
-                        <div class="col-sm-9">
-                            <input
-                                type="text"
-                                class="form-control"
-                                name="district"
-                                value={district}
-                                placeholder="Enter District"
-                                onChange={e => OnInputChange(e)}
-                            />
-                        </div>
-
-                    </div>
+          <div class="form-group row my-2">
+            <label class="col-sm-3 col-form-label col-form-label-sm">
+              District
+            </label>
+            <div class="col-sm-9">
+              <select
+                onChange={(e) => {
+                  OnInputChange(e);
+                }}
+                class="form-control form-control-sm"
+                name="district"
+              >
+                {districts.map((dataItem) => {
+                  return <option value={dataItem.name}>{dataItem.name}</option>;
+                })}
+              </select>
+            </div>
+          </div>
                     <div class="form-group row my-2">
                         <label class="col-sm-3 col-form-label col-form-label-sm"    >User Type</label>
                         <div class="col-sm-9">
-                            <input
-                                type="text"
-                                class="form-control"
+                           
+                            <select
+                                onChange={(e) => OnInputChange(e)}
+                                class="form-control form-control-sm"
                                 name="user_type"
-                                value={user_type}
-                                placeholder="Enter User Type"
-                                onChange={e => OnInputChange(e)}
-                            />
-                            <select class="form-control form-control-sm">
-                                <option>admin</option>
-                                <option>employee</option>
+                            >
+                                <option value={"admin"}>admin</option>
+                                <option value={"employee"}>employee</option>
                             </select>
                         </div>
 
                     </div>
 
-                    <button type="submit" class="btn btn-primary updatebtn">Update Confirm</button>
+                    <button type="submit" class="btn btn-primary updatebtn">Add User</button>
                 </form>
             </div>
 
