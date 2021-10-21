@@ -44,7 +44,7 @@ const EditUser = () => {
         setUser(result.data)
       
     }
-    
+    console.log(user.district);
     useEffect(() => {
         console.log(State.getStatesOfCountry("BD"));
     }, []);

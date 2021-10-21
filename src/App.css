@@ -57,13 +57,16 @@
   display: flex;
   flex-wrap: wrap;
 }
+
 .mytabs input[type="radio"] {
   display: none;
 }
+
 .mytabs label {
   padding: 15px;
   background: #e2e2e2;
   font-weight: bold;
+  
 }
 
 .mytabs .tab {
@@ -74,11 +77,13 @@
   display: none;
 }
 
-
-.mytabs input[type='radio']:checked + label + .tab {
+.mytabs input[type='radio']:checked+label+.tab {
   display: block;
 }
 
-.mytabs input[type="radio"]:checked + label {
+.mytabs input[type="radio"]:checked+label {
   background: #fff;
+}
+.activeTab{
+  background: red;
 }

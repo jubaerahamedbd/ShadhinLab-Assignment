@@ -4,8 +4,8 @@ import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { Country, State, City } from "country-state-city";
-const AddUser = ({ closeModal }) => {
-    let history = useHistory()
+const AddUser = ({ closeModal,setUsers,tabValue }) => {
+    
     const [user, setUser] = useState({
         first_name: "",
         last_name: "",
@@ -25,7 +25,7 @@ const AddUser = ({ closeModal }) => {
         setUser({
             ...user,
             [e.target.name]:
-                e.target.name === "Division"
+                e.target.name === "division"
                     ? e.target.value.split("-")[0]
                     : e.target.value,
         });
@@ -33,12 +33,17 @@ const AddUser = ({ closeModal }) => {
     const onSubmit = async e => {
         e.preventDefault()
         await axios.post("https://60f2479f6d44f300177885e6.mockapi.io/users", user)
-        history.push("/")
-        
+        const result = await axios.get("https://60f2479f6d44f300177885e6.mockapi.io/users")
+        //setUsers(result.data.reverse())
+        setUsers(
+            result.data.filter((data) => {
+                if (data.user_type === tabValue) return true;
+            })
+        )
         closeModal(false)
     }
     useEffect(() => {
-        
+        console.log(State.getStatesOfCountry("BD"));
     }, []);
     return (
         <div className="AddUserLayout">
@@ -141,7 +146,7 @@ const AddUser = ({ closeModal }) => {
 
                         </div>
 
-                        <button type="submit"  class="btn btn-primary updatebtn">Add User</button>
+                        <button type="submit" class="btn btn-primary updatebtn">Add User</button>
                     </form>
                 </div>
 

@@ -1,31 +1,27 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Button } from 'reactstrap'
 import { Link } from "react-router-dom";
-import { Country, State, City } from 'country-state-city';
 import AddUser from "./Users/AddUser";
 
 const Home = () => {
-    
+    const [tabValue, settabValue] = useState('admin')
     const [users, setUsers] = useState([])
+
     const [openModal, setOpenModal] = useState(false)
     useEffect(() => {
+        console.log(tabValue);
         loadUsers()
-    }, [])
-    
+    }, [tabValue])
+
     const loadUsers = async () => {
         const result = await axios.get("https://60f2479f6d44f300177885e6.mockapi.io/users")
         //setUsers(result.data.reverse())
-
         setUsers(
             result.data.filter((data) => {
-                if (data.user_type === 'admin') return true;
+                if (data.user_type === tabValue) return true;
             })
         )
     }
-
-
-
     const deleteUser = async id => {
         await axios.delete(`https://60f2479f6d44f300177885e6.mockapi.io/users/${id}`)
         loadUsers();
@@ -38,10 +34,10 @@ const Home = () => {
                 <Link className="btn btn-outline-dark col-md-3 " id="addUser" onClick={() => setOpenModal(true)} to="/">Add User</Link>
             </div>
             <hr />
-           
+
             <div className="mytabs">
-                <input type="radio" id="admin" name="mytabs" checked="checked" />
-                <label for="admin">Admin View</label>
+                <input type="radio" id="admin" name="mytabs" checked="checked" onClick={() => settabValue('admin')} />
+                <label for="admin" >Admin View</label>
                 <div className="tab">
                     <table class="table table-striped text-center shadow">
                         <thead>
@@ -77,8 +73,8 @@ const Home = () => {
                         </tbody>
                     </table>
                 </div>
-                <input type="radio" id="employee" name="mytabs" checked="checked" />
-                <label for="employee" >Employee View</label>
+                <input type="radio" id="employee" name="mytabs" checked="checked" onClick={() => settabValue('employee')} />
+                <label for="employee"  >Employee View</label>
                 <div className="tab">
                     <table class="table table-striped text-center shadow">
                         <thead>
@@ -103,7 +99,7 @@ const Home = () => {
                                         <td>{user.district}</td>
                                         <td>{user.user_type}</td>
                                         <td><Link className="btn btn-primary mx-2" to={`/user/${user.id}`}>Details</Link>
-                                            <Link className="btn btn-danger mx-2" onClick={() => deleteUser(user.id)}>Delete</Link>
+                                            <div className="btn btn-danger mx-2" onClick={() => deleteUser(user.id)}>Delete</div>
                                         </td>
 
                                     </tr>
@@ -115,7 +111,7 @@ const Home = () => {
                     </table>
                 </div>
             </div>
-            {openModal && <AddUser closeModal={setOpenModal} />}
+            {openModal && <AddUser closeModal={setOpenModal} setUsers={setUsers} tabValue={tabValue} />}
         </div>
     )
 }

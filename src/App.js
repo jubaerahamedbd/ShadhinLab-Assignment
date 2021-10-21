@@ -13,12 +13,12 @@ function App() {
     <BrowserRouter>
       <div className="App">
         <Switch>
-          <Route exact path="/" component={Home}/>
-          <Route exact path="/user/add" component={AddUser}/>
-          <Route exact path="/user/:id" component={User}/>
-          <Route exact path="/user/edit/:id" component={EditUser}/>
-          <Route component={NotFound}/>
-          
+          <Route exact path="/" component={Home} />
+          <Route exact path="/user/add" component={AddUser} />
+          <Route exact path="/user/:id" component={User} />
+          <Route exact path="/user/edit/:id" component={EditUser} />
+          <Route component={NotFound} />
+
         </Switch>
       </div>
     </BrowserRouter>
